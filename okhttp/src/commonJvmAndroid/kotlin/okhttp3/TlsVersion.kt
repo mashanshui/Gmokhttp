@@ -22,6 +22,7 @@ package okhttp3
 enum class TlsVersion(
   @get:JvmName("javaName") val javaName: String,
 ) {
+  TLCPv1_1("TLCPv1.1"),// 增加安全传输协议 TLCPv1_1
   TLS_1_3("TLSv1.3"), // 2016.
   TLS_1_2("TLSv1.2"), // 2008.
   TLS_1_1("TLSv1.1"), // 2006.
@@ -41,6 +42,7 @@ enum class TlsVersion(
     @JvmStatic
     fun forJavaName(javaName: String): TlsVersion =
       when (javaName) {
+        "TLCPv1.1" -> TLCPv1_1
         "TLSv1.3" -> TLS_1_3
         "TLSv1.2" -> TLS_1_2
         "TLSv1.1" -> TLS_1_1

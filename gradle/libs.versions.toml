@@ -20,6 +20,7 @@ org-junit-jupiter = "5.13.4"
 retrofit = "3.0.0"
 startupRuntime = "1.2.0"
 testcontainers = "1.21.3"
+kona = "1.0.19"
 
 [libraries]
 amazonCorretto = "software.amazon.cryptools:AmazonCorrettoCryptoProvider:2.5.0"
@@ -117,3 +118,7 @@ squareup-okio-fakefilesystem = { module = "com.squareup.okio:okio-fakefilesystem
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-junit5 = { module = "org.testcontainers:junit-jupiter", version.ref = "testcontainers" }
 zstd-kmp-okio = { module = "com.squareup.zstd:zstd-kmp-okio", version = "0.4.0" }
+kona-crypto = { module = "com.tencent.kona:kona-crypto", version.ref = "kona" }
+kona-pkix = { module = "com.tencent.kona:kona-pkix", version.ref = "kona" }
+kona-ssl = { module = "com.tencent.kona:kona-ssl", version.ref = "kona" }
+kona-provider = { module = "com.tencent.kona:kona-provider", version.ref = "kona" }

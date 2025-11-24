@@ -88,7 +88,8 @@ class CipherSuite private constructor(
     private val INSTANCES = mutableMapOf<String, CipherSuite>()
 
     // Last updated 2016-07-03 using cipher suites from Android 24 and Java 9.
-
+    @JvmField val TLCP_ECC_SM4_CBC_SM3 = init("TLCP_ECC_SM4_CBC_SM3", 0xE013)
+    @JvmField val TLCP_ECC_SM4_GCM_SM3 = init("TLCP_ECC_SM4_GCM_SM3", 0xE053)
     // @JvmField val TLS_NULL_WITH_NULL_NULL = init("TLS_NULL_WITH_NULL_NULL", 0x0000)
     @JvmField val TLS_RSA_WITH_NULL_MD5 = init("SSL_RSA_WITH_NULL_MD5", 0x0001)
 

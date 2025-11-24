@@ -16,20 +16,26 @@
 package okhttp.android.testapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
+import kotlin.concurrent.thread
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.gm.GmOkHttpClient
 import okhttp3.internal.platform.AndroidPlatform
 import okio.IOException
 
 open class MainActivity : ComponentActivity() {
+  private val TAG = "MainActivity"
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
+    thread {
+      okhttpKona()
+    }
     val client = OkHttpClient()
 
     // Ensure we are compiling against the right variant
@@ -56,5 +62,21 @@ open class MainActivity : ComponentActivity() {
         }
       },
     )
+  }
+
+  private fun okhttpKona() {
+    try {
+      val client =
+        GmOkHttpClient.getOkHttpClientBuilder(resources.assets.open("sm2.trust.pem"))
+          .build()
+      val request = Request.Builder()
+        .get()
+        .url("https://demo.gmssl.cn:1443").build()
+      val response = client.newCall(request).execute()
+      val string = response.body.string()
+      Log.e(TAG, "okhttpKona: " + string)
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
   }
 }

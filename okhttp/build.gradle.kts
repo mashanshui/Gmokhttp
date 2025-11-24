@@ -71,7 +71,10 @@ kotlin {
       dependencies {
         api(libs.squareup.okio)
         api(libs.kotlin.stdlib)
-
+        api(libs.kona.crypto)
+        api(libs.kona.pkix)
+        api(libs.kona.ssl)
+        api(libs.kona.provider)
         compileOnly(libs.animalsniffer.annotations)
       }
     }
@@ -366,8 +369,34 @@ tasks.withType<KotlinCompile> {
   }
 }
 
-apply(plugin = "io.github.usefulness.maven-sympathy")
+//apply(plugin = "io.github.usefulness.maven-sympathy")
 
 mavenPublishing {
+  publishToMavenCentral() // 发布到 Maven Central
+  signAllPublications() // 启用 GPG 签名
   configure(KotlinMultiplatform(javadocJar = JavadocJar.Empty(), androidVariantsToPublish = listOf("release")))
+  coordinates("io.github.mashanshui", "gmokhttp", "1.0.0")
+
+  pom {
+    name.set("GmOkhttp")
+    description.set("Modify okhttp to support GM")
+    url.set("https://github.com/mashanshui/Gmokhttp")
+    licenses {
+      license {
+        name.set("Apache-2.0")
+        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+      }
+    }
+    developers {
+      developer {
+        id.set("mashanshui")
+        name.set("mashanshui")
+        email.set("mashanshui@qq.com")
+      }
+    }
+    scm {
+      url.set("https://github.com/mashanshui/Gmokhttp")
+      connection.set("scm:git:git://github.com/mashanshui/Gmokhttp.git")
+    }
+  }
 }
