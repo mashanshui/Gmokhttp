@@ -11,6 +11,12 @@
   exclude(group = "com.squareup.okhttp3", module = "okhttp")
 }
  ```
+如果引入的地方较多，可以全局排除：
+```kotlin
+configurations.all {
+  exclude(group = "com.squareup.okhttp3", module = "okhttp")
+}
+ ```
 
 ## 使用
 ```kotlin
@@ -22,8 +28,29 @@ val request = Request.Builder()
   .build()
 val response = client.newCall(request).execute()
 ```
-通过GmOkHttpClient.getOkHttpClientBuilder(caCert)并传入ca证书获取支持国密的OkHttpClient，后续使用和普通okhttp
-没有区别。理论上也支持Retrofit等框架，但未测试。
+```kotlin
+val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+  override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+  }
 
-## 原理分析
+  override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+  }
+
+  override fun getAcceptedIssuers(): Array<X509Certificate> {
+    return arrayOf()
+  }
+})
+val client =
+  GmOkHttpClient.getOkHttpClientBuilder(trustAllCerts)
+    .build()
+val request = Request.Builder()
+  .url("https://demo.gmssl.cn:1443")
+  .build()
+val response = client.newCall(request).execute()
+```
+通过GmOkHttpClient.getOkHttpClientBuilder(caCert)并传入ca证书获取支持国密的OkHttpClient，也可通过getOkHttpClientBuilder(trustManagers)方法自定义证书验证逻辑。
+
+后续使用和普通okhttp没有区别，理论上也支持Retrofit等框架，但未测试。
+
+## 原理介绍
 https://blog.csdn.net/shanshui911587154/article/details/155204476

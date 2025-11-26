@@ -18,6 +18,9 @@ package okhttp.android.testapp
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import java.security.cert.X509Certificate
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 import kotlin.concurrent.thread
 import okhttp3.Call
 import okhttp3.Callback
@@ -68,6 +71,34 @@ open class MainActivity : ComponentActivity() {
     try {
       val client =
         GmOkHttpClient.getOkHttpClientBuilder(resources.assets.open("sm2.trust.pem"))
+          .build()
+      val request = Request.Builder()
+        .get()
+        .url("https://demo.gmssl.cn:1443").build()
+      val response = client.newCall(request).execute()
+      val string = response.body.string()
+      Log.e(TAG, "okhttpKona: " + string)
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+  private fun okhttpKona2() {
+    try {
+      // 创建TrustManager
+      val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+        override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+        }
+
+        override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+        }
+
+        override fun getAcceptedIssuers(): Array<X509Certificate> {
+          return arrayOf()
+        }
+      })
+      val client =
+        GmOkHttpClient.getOkHttpClientBuilder(trustAllCerts)
           .build()
       val request = Request.Builder()
         .get()
